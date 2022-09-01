@@ -1,0 +1,41 @@
+server:
+  port: 88
+  #==================================spring==================================
+spring:
+  application:
+    name: blog
+  #================mysql==============================
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/blog?characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #================redis==============================
+  redis:
+    host: 192.168.133.248
+    port: 6379
+  #================mail==============================
+  mail:
+    default-encoding: utf-8
+    host: smtp.qq.com
+    username: 2625727808@qq.com
+    password: ubzfupbtqrdhdihf
+    port: 465
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+            required: true
+          auth: true
+        debug: true
+
+  #===============================spring====================================
+
+  #================mybatis-plus=========================
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #================mybatis-plus=========================
+#debug: true
