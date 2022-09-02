@@ -16,10 +16,16 @@ public class ArticleVo {
     private String summary;
     private int commentCounts;
     private int viewCounts;
-   // private long authorId;
-    //private long bodyId;
-    //private long categoryId;
+    private long authorId;
+    private long bodyId;
+    private long categoryId;
     private LocalDateTime createDate;
     private int weight;
+
     private String author;
+
+    private ArticleBodyVo body;
+
+    private CategoryVo category;
+
 }

@@ -1,5 +1,6 @@
 package com.join.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  * @date 2022/8/30 22:52
  */
 @Data
+@TableName("tb_category")
 public class Category {
     private Long id;
     private String avatar;  //分类图标类型路径

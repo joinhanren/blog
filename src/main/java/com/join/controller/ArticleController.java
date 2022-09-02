@@ -42,7 +42,7 @@ public class ArticleController {
      */
 
     @GetMapping("/view/{id}")
-    public Result findArticleById(Long id){
+    public Result findArticleById(@PathVariable("id") Long id){
         return articleService.findArticleById(id);
     }
 

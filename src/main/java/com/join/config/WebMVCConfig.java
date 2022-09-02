@@ -31,7 +31,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
        registry.addInterceptor(jwtInterceptor)
                .addPathPatterns("/**")
-               .excludePathPatterns("/login","/register","/article/list")
+               .excludePathPatterns("/login","/register","/article/**")
                .excludePathPatterns("/sendVerifyCode");
 
     }

@@ -3,11 +3,16 @@ package com.join.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.join.entity.Article;
+import com.join.mapper.UserMapper;
 import com.join.params.PageParams;
 import com.join.entity.Result;
 import com.join.mapper.ArticleMapper;
+import com.join.service.ArticleBodyService;
 import com.join.service.ArticleService;
+import com.join.service.CategoryService;
+import com.join.vo.ArticleBodyVo;
 import com.join.vo.ArticleVo;
+import com.join.vo.CategoryVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +30,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private ArticleBodyService articleBodyService;
+
+    @Autowired
+    private CategoryService categoryService;
     /**
      * 分页查询文章列表
      *
@@ -55,8 +69,14 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public Result findArticleById(Long id) {
-        return null;
+        Article article = articleMapper.selectById(id);
+        ArticleVo articleVo = this.copy(article,true,true,true);
+        return Result.success(articleVo);
     }
+
+
+
+
 
     private List<ArticleVo> copyList(List<Article> records) {
         List<ArticleVo> articleVoList=new ArrayList<>();
@@ -69,6 +89,34 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleVo copy(Article article){
         ArticleVo articleVo=new ArticleVo();
         BeanUtils.copyProperties(article,articleVo);
+        return articleVo;
+    }
+
+    private ArticleVo copy(Article article,boolean isAuthor,boolean articleBody,boolean isCategory){
+        ArticleVo articleVo=this.copy(article);
+        BeanUtils.copyProperties(article,articleVo);
+        /**
+         * 查询结果是否附带作者昵称
+         */
+        if (isAuthor){
+            articleVo.setAuthor(userMapper.selectById(articleVo.getAuthorId()).getNickname());
+        }
+        /**
+         * 是否附带博客详情
+         */
+        if (articleBody){
+            ArticleBodyVo body = articleBodyService.findArticleBodyById(articleVo.getBodyId());
+            articleVo.setBody(body);
+        }
+        /**
+         * 是否附带类型信息
+         */
+        if (isCategory){
+            Long categoryId = articleVo.getCategoryId();
+            CategoryVo categoryVo = categoryService.findCategoryById(categoryId);
+            articleVo.setCategory(categoryVo);
+        }
+
         return articleVo;
     }
 
