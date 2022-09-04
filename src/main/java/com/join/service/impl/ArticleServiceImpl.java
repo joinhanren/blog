@@ -10,6 +10,7 @@ import com.join.mapper.ArticleMapper;
 import com.join.service.ArticleBodyService;
 import com.join.service.ArticleService;
 import com.join.service.CategoryService;
+import com.join.service.ThreadService;
 import com.join.vo.ArticleBodyVo;
 import com.join.vo.ArticleVo;
 import com.join.vo.CategoryVo;
@@ -39,6 +40,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ThreadService threadService;
     /**
      * 分页查询文章列表
      *
@@ -71,6 +75,10 @@ public class ArticleServiceImpl implements ArticleService {
     public Result findArticleById(Long id) {
         Article article = articleMapper.selectById(id);
         ArticleVo articleVo = this.copy(article,true,true,true);
+        /**
+         * 采用线程池更新阅读数
+         */
+        threadService.updateArticleViewCount(articleMapper,article);
         return Result.success(articleVo);
     }
 

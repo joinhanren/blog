@@ -4,6 +4,7 @@ import com.join.entity.Result;
 import com.join.params.LoginParams;
 import com.join.service.LoginService;
 import com.join.utils.Encryption;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @Description
  * @date 2022/8/25 21:59
  */
+@Api(tags = "用户登录和退出登录的API")
 @RestController
 public class LoginController {
 
@@ -21,11 +23,19 @@ public class LoginController {
 
     /**
      * 登录
+     *
      * @param loginParams
      * @return
      */
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "登录成功"),
+            @ApiResponse(code = 400, message = "登录失败")
+    })
+    @ApiOperation("用户的登录")
     @PostMapping("/login")
-    public Result login(@RequestBody LoginParams loginParams) {
+    public Result login(@ApiParam(name = "LoginParams", value = "loginParams", required = true)
+                        @RequestBody LoginParams loginParams) {
         String account = loginParams.getAccount();
         String password = loginParams.getPassword();
         if ("".equals(account) || "".equals(password)) {
@@ -39,6 +49,7 @@ public class LoginController {
 
     /**
      * 退出登录
+     *
      * @param token
      * @return
      */

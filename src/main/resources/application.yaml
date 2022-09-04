@@ -30,6 +30,19 @@ spring:
           auth: true
         debug: true
 
+  #================mongoDB=========================
+  data:
+    mongodb:
+      uri: mongodb://192.168.133.248:27017/blog
+
+
+
+
+   #================swagger=========================
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
   #===============================spring====================================
 
   #================mybatis-plus=========================
