@@ -30,18 +30,28 @@ spring:
           auth: true
         debug: true
 
+
   #================mongoDB=========================
   data:
     mongodb:
       uri: mongodb://192.168.133.248:27017/blog
 
-
-
-
    #================swagger=========================
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+   #================文件上传=========================
+
+  servlet:
+    multipart:
+      #总上传数据大小
+      max-request-size: 10MB
+#      单个文件大小
+      max-file-size: 5MB
+#      开启文件上传
+      enabled: true
 
   #===============================spring====================================
 

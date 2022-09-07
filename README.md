@@ -22,7 +22,7 @@ git clone https://gitee.com/joinhanren/blog.git
 
 **第三步：**
 
-​	刷新maven
+​	导入项目
 
 **第四步：**
 
@@ -43,7 +43,17 @@ git clone https://gitee.com/joinhanren/blog.git
     password: dadfggedfadgnk//自己邮箱的key
 ```
 
-注：password 这个配置中，并不是自己邮箱的密码，是邮箱生成的一个key
+**注：password 这个配置中，并不是自己邮箱的密码，是邮箱生成的一个key**
+
+5.静态文件服务器的使用（**更换为自己的密钥和域名**）
+
+```java
+public static final String url =""//个人域名，或者服务分发的域名
+private static final String accessKey =//AS key
+ private static final String secretKey //个人密钥
+```
+
+
 
 ### 更新日志
 
@@ -69,7 +79,6 @@ v1.0.3
 
 - 添加了 swagger 技术，添加了swagger配置文档
 - 优化了在高并发的情况下查看文章，数据库会存在写入数据的压力，会对浏览文章造成影响
-- 加入了mongodb 文档数据库
 - 新增了文章评论模块
 - 新增查看文章评论列表
 - 新增添加评论
@@ -77,9 +86,17 @@ v1.0.3
 - 新增查看子评论（还未测试）
 - 新增评论点赞（还未测试）
 
+v1.0.4
 
+- 新增日志功能
 
-###版权声明
+- 新增静态文件服务，存储静态文件，降低服务器压力
+
+- 新增用户头像上传修改功能
+
+  
+
+### 版权声明
 
 当前项目是后台完整功能代码 , 但是仍然仅支持个人演示测试 , 不包含线上使用 ，仅供于学习交流，禁止一切商用行为！ 使用本软件时,请遵守当地法律法规,任何违法用途一切后果请自行承担！！！
 

@@ -1,5 +1,6 @@
 package com.join.controller;
 
+import com.join.annotation.LogAnnotation;
 import com.join.params.PageParams;
 import com.join.entity.Result;
 import com.join.service.ArticleService;
@@ -28,11 +29,25 @@ public class ArticleController {
         return articleService.listArticle(pageParams);
     }
 
+
+    /**
+     * 测试请求
+     * @return
+     */
     @GetMapping("/haha")
+    @LogAnnotation(module="文章",operation="获取文章列表")
     public String haha(){
-        System.out.println(ThreadLocalUser.get());
-        return "dfadfsfsafsa";
+
+        return "haha";
     }
+
+
+    @GetMapping("/test")
+    @LogAnnotation(module="文章",operation="获取文章列表")
+    public String test(@RequestParam("s") String s){
+        return s;
+    }
+
 
 
     /**
@@ -40,7 +55,7 @@ public class ArticleController {
      * @param id
      * @return
      */
-
+    @LogAnnotation
     @GetMapping("/view/{id}")
     public Result findArticleById(@PathVariable("id") Long id){
         return articleService.findArticleById(id);

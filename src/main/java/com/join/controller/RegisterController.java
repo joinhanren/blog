@@ -1,5 +1,6 @@
 package com.join.controller;
 
+import com.join.annotation.LogAnnotation;
 import com.join.entity.Result;
 import com.join.service.RegisterService;
 import com.join.vo.RegisterUser;
@@ -24,6 +25,7 @@ public class RegisterController {
      * @param
      * @return
      */
+    @LogAnnotation
     @PostMapping("/register")
 //    public Result register(@RequestParam("account") String account,
 //                           @RequestParam("password") String password,

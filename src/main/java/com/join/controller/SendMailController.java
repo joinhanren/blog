@@ -1,5 +1,6 @@
 package com.join.controller;
 
+import com.join.annotation.LogAnnotation;
 import com.join.entity.Result;
 import com.join.service.SendMailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class SendMailController {
     @Autowired
     private SendMailService sendMailService;
 
+    @LogAnnotation
     @GetMapping("/sendVerifyCode")
     public Result sendVerifyCode(@RequestParam("email") String email){
         return sendMailService.sendVerifyCode(email);

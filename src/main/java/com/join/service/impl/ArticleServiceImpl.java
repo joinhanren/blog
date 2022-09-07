@@ -43,6 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ThreadService threadService;
+
     /**
      * 分页查询文章列表
      *
@@ -52,16 +53,16 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Result listArticle(PageParams pageParams) {
         Page<Article> articlePage = new Page<>(pageParams.getPage(), pageParams.getPageSize());
-        LambdaQueryWrapper<Article> queryWrapper=new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         //是否置顶排序
 //        queryWrapper.orderByDesc(Article::getWeight);
         //根据时间排序
         //order by create_date desc
-        queryWrapper.orderByDesc(Article::getWeight,Article::getCreateDate);
+        queryWrapper.orderByDesc(Article::getWeight, Article::getCreateDate);
         Page<Article> page = articleMapper.selectPage(articlePage, queryWrapper);
         //获取list  ,不能直接返回
         List<Article> records = page.getRecords();
-        List<ArticleVo> articleVoList=copyList(records);
+        List<ArticleVo> articleVoList = copyList(records);
         return Result.success(articleVoList);
     }
 
@@ -74,52 +75,49 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Result findArticleById(Long id) {
         Article article = articleMapper.selectById(id);
-        ArticleVo articleVo = this.copy(article,true,true,true);
+        ArticleVo articleVo = this.copy(article, true, true, true);
         /**
          * 采用线程池更新阅读数
          */
-        threadService.updateArticleViewCount(articleMapper,article);
+        threadService.updateArticleViewCount(articleMapper, article);
         return Result.success(articleVo);
     }
 
 
-
-
-
     private List<ArticleVo> copyList(List<Article> records) {
-        List<ArticleVo> articleVoList=new ArrayList<>();
+        List<ArticleVo> articleVoList = new ArrayList<>();
         for (Article record : records) {
             articleVoList.add(copy(record));
         }
         return articleVoList;
     }
 
-    private ArticleVo copy(Article article){
-        ArticleVo articleVo=new ArticleVo();
-        BeanUtils.copyProperties(article,articleVo);
+    private ArticleVo copy(Article article) {
+        ArticleVo articleVo = new ArticleVo();
+        BeanUtils.copyProperties(article, articleVo);
         return articleVo;
     }
 
-    private ArticleVo copy(Article article,boolean isAuthor,boolean articleBody,boolean isCategory){
-        ArticleVo articleVo=this.copy(article);
-        BeanUtils.copyProperties(article,articleVo);
+    private ArticleVo copy(Article article, boolean isAuthor, boolean articleBody, boolean isCategory) {
+        ArticleVo articleVo = this.copy(article);
+        BeanUtils.copyProperties(article, articleVo);
         /**
          * 查询结果是否附带作者昵称
          */
-        if (isAuthor){
+        if (isAuthor) {
             articleVo.setAuthor(userMapper.selectById(articleVo.getAuthorId()).getNickname());
         }
         /**
          * 是否附带博客详情
          */
-        if (articleBody){
+        if (articleBody) {
             ArticleBodyVo body = articleBodyService.findArticleBodyById(articleVo.getBodyId());
             articleVo.setBody(body);
         }
         /**
          * 是否附带类型信息
          */
-        if (isCategory){
+        if (isCategory) {
             Long categoryId = articleVo.getCategoryId();
             CategoryVo categoryVo = categoryService.findCategoryById(categoryId);
             articleVo.setCategory(categoryVo);

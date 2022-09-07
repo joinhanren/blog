@@ -1,5 +1,6 @@
 package com.join.controller;
 
+import com.join.annotation.LogAnnotation;
 import com.join.entity.Comment;
 import com.join.entity.Result;
 import com.join.service.CommentService;
@@ -34,6 +35,7 @@ public class CommentsController {
      * @param limit
      * @return
      */
+    @LogAnnotation
     @ApiOperation(value = "获取文章的评论列表", httpMethod = "GET")
     @GetMapping("/comments/{id}/{limit}")
     public Result comments(
@@ -43,7 +45,7 @@ public class CommentsController {
         return Result.success(comments);
     }
 
-
+    @LogAnnotation
     @ApiOperation(value = "提交一条评论", httpMethod = "POST")
     @PostMapping("/addComment")
     public Result addComment(@RequestBody Comment comment, HttpServletRequest request) {
@@ -52,13 +54,15 @@ public class CommentsController {
         return commentService.addComment(comment);
     }
 
-
+    @LogAnnotation
     @DeleteMapping("/deleteComment")
     @ApiOperation(value = "删除一条评论", httpMethod = "DELETE")
     public Result deleteComment(@RequestBody CommentVo commentVo) {
         return commentService.deleteComment(commentVo);
     }
 
+
+    @LogAnnotation
     @ApiOperation(value = "展开该条评论的子评论", httpMethod = "GET")
     @GetMapping("/getChildComment/{parentID}")
     public Result getChildComment(@ApiParam(name = "parentID", value = "该条评论的id")
@@ -68,6 +72,7 @@ public class CommentsController {
     }
 
 
+    @LogAnnotation
     @ApiOperation(value = "对评论的点赞", httpMethod = "GET")
     @GetMapping("/addLike/{commentID}")
     public Result addLikes(@ApiParam(name = "commentID", value = "该条评论的id")

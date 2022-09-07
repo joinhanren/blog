@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * @author join
- * @Description
+ * @Description  用户实体类
  * @date 2022/8/25 18:06
  */
 @Data
