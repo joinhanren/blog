@@ -2,6 +2,7 @@ package com.join.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -19,8 +20,11 @@ public class User {
     private Long id;
     private String account;
     private Integer admin;
+    private String sex;
+    private LocalDateTime birthday;
     private String avatar;
     private LocalDateTime createDate;
+    @TableLogic
     private Integer deleted;
     private String email;
     private LocalDateTime lastLogin;

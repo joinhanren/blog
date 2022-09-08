@@ -2,6 +2,7 @@ package com.join.service;
 
 import com.join.params.PageParams;
 import com.join.entity.Result;
+import com.join.vo.EditArticle;
 
 /**
  * @author join
@@ -21,4 +22,11 @@ public interface ArticleService {
      * @return
      */
     public Result findArticleById(Long id);
+
+    /**
+     * 发布文章
+     * @param editArticle
+     * @return
+     */
+    public Result pushArticle(EditArticle editArticle);
 }

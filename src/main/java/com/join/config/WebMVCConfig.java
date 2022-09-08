@@ -36,7 +36,8 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/login", "/register", "/article/**")
                 .excludePathPatterns("/sendVerifyCode","/comments/**")
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**",
-                        "/v3/**", "/v3/**", "/swagger-ui/index.html");
+                        "/v3/**", "/v3/**", "/swagger-ui/index.html")
+                .addPathPatterns("/pushArticle");
 
     }
 

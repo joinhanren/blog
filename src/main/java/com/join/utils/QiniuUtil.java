@@ -19,9 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class QiniuUtil {
 
-    public static final String url = "http://rhsha4hoi.hb-bkt.clouddn.com";
-    private static final String accessKey = "1A9UEuMl_9pj84txtG3mHcp1WGLlv7LmjbfRtESx";
-    private static final String secretKey = "2Ry8w3LlhLGOPQeWS0A1mr1ccci3m-E0UxndyrCi";
+    public static final String url = "http://rhsha4hoi.hb-bkt.clouddn.com";//个人域名
+    private static final String accessKey = "1A9UEuMl_9pj8dsfsajkgnrGLlv7LmjbfRtESx";//密钥
+    private static final String secretKey = "2Ry8w3Llhwcrosldfdsg1ccci3m-E0UxndyrCi";//密钥
 
     public Boolean upload(MultipartFile file, String fileName) {
         //构造一个带指定 Region 对象的配置类

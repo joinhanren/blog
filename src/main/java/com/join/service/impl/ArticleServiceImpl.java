@@ -2,24 +2,33 @@ package com.join.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.join.entity.Article;
+import com.join.entity.*;
+import com.join.mapper.ArticleBodyMapper;
+import com.join.mapper.TagArticleMapper;
 import com.join.mapper.UserMapper;
+import com.join.mapper.impl.TagArticleMapperImpl;
 import com.join.params.PageParams;
-import com.join.entity.Result;
 import com.join.mapper.ArticleMapper;
 import com.join.service.ArticleBodyService;
 import com.join.service.ArticleService;
 import com.join.service.CategoryService;
 import com.join.service.ThreadService;
+import com.join.utils.ThreadLocalUser;
 import com.join.vo.ArticleBodyVo;
 import com.join.vo.ArticleVo;
 import com.join.vo.CategoryVo;
+import com.join.vo.EditArticle;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author join
@@ -39,10 +48,18 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleBodyService articleBodyService;
 
     @Autowired
+    private ArticleBodyMapper articleBodyMapper;
+
+    @Autowired
     private CategoryService categoryService;
 
     @Autowired
     private ThreadService threadService;
+
+    @Autowired
+    private TagArticleMapperImpl tagArticleMapperImpl;
+
+    private static final Integer DEFAULT = 0x000;
 
     /**
      * 分页查询文章列表
@@ -81,6 +98,55 @@ public class ArticleServiceImpl implements ArticleService {
          */
         threadService.updateArticleViewCount(articleMapper, article);
         return Result.success(articleVo);
+    }
+
+    /**
+     * 发布文章
+     *
+     * @param editArticle
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result pushArticle(EditArticle editArticle) {
+        Long id = ThreadLocalUser.get().getId();
+        Article article = new Article();
+        article.setTitle(editArticle.getTitle());
+        article.setSummary(editArticle.getSummary());
+        article.setAuthorId(id);
+        article.setCreateDate(LocalDateTime.now());
+        article.setCategoryId(editArticle.getCategoryId());
+        article.setViewCounts(DEFAULT);
+        article.setCommentCounts(DEFAULT);
+        article.setWeight(DEFAULT);
+        try {
+            articleMapper.insert(article);
+            ArticleBody articleBody = new ArticleBody();
+            articleBody.setContent(editArticle.getContent());
+            articleBody.setContentHtml(editArticle.getContentHtml());
+            articleBody.setArticleId(article.getId());
+            this.articleBodyMapper.insert(articleBody);
+            article.setBodyId(articleBody.getId());
+            this.articleMapper.updateById(article);
+            if (editArticle.getTags() != null) {
+                List<TagArticle> list = new ArrayList<>();
+                for (Tag tag : editArticle.getTags()) {
+                    TagArticle tagArticle = new TagArticle();
+                    tagArticle.setArticleId(article.getId());
+                    tagArticle.setTagId(tag.getId());
+                    list.add(tagArticle);
+                }
+                this.tagArticleMapperImpl.saveBatch(list);
+            }
+            Map<String, Long> map = new HashMap<>();
+            map.put("id", article.getId());
+
+            return Result.success(map);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.fail(400, "发布文章失败！");
+        }
+
     }
 
 

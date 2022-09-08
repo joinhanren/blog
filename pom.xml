@@ -113,7 +113,7 @@
         </dependency>
 
 
-<!--        七牛云-->
+<!--        qiniuyun-->
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>

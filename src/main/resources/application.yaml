@@ -19,7 +19,7 @@ spring:
     default-encoding: utf-8
     host: smtp.qq.com
     username: 2625727808@qq.com
-    password: ubzfupbtqrdhdihf
+    password: zfdsdfsrvgdhdeod  #个人邮箱key
     port: 465
     properties:
       mail:
@@ -60,5 +60,10 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
   #================mybatis-plus=========================
 #debug: true

@@ -50,7 +50,7 @@ public class RegisterServiceImpl implements RegisterService {
             user.setPassword(Encryption.MD5Encryption(registerUser.getPassword()));
             user.setLastLogin(LocalDateTime.now());
             user.setNickname("游客123");
-            user.setAvatar("/static/default.png");
+            user.setAvatar("default.png");
             registerMapper.insert(user);
             return Result.success(null);
         } else {
